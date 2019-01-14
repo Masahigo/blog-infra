@@ -1,0 +1,46 @@
+resources:
+  # The "name" property below will be the ID of the new project
+  - name: {{ env["deployment"] }}
+    type: project.py
+    properties:
+      organization-id: "{{ properties["organization-id"] }}"
+      billing-account-name: billingAccounts/{{ properties["billing-account-id"] }}
+      project-name: "{{ properties["project-name"] }}"
+      
+      # The apis to enable in the new project.
+      # To see the possible APIs, use: gcloud services list --available
+      apis:
+        - compute.googleapis.com
+        - deploymentmanager.googleapis.com
+        - storage-component.googleapis.com
+        - monitoring.googleapis.com
+        - logging.googleapis.com
+        - dns.googleapis.com
+        - appengine.googleapis.com
+        - cloudbuild.googleapis.com
+        - siteverification.googleapis.com
+
+      bucket-export-settings:
+        create-bucket: true
+      
+      # Makes the service account that Deployment Manager would use in the
+      # generated project when making deployments in this new project a
+      # project owner.
+      set-dm-service-account-as-owner: true
+      # The patches to apply to the project's IAM policy. Note that these are
+      # always applied as a patch to the project's current IAM policy, not as a
+      # diff with the existing properties stored in DM. This means that removing
+      # a binding from the 'add' section will not remove the binding on the
+      # project during the next update. Instead it must be added to the 'remove'
+      # section.
+      iam-policy-patch:
+          add:
+            - role: roles/owner
+              members:
+                - {{ properties["owner-account"] }}
+            - role: roles/appengine.appAdmin
+              members:
+                - serviceAccount:$(ref.{{ env["deployment"] }}.projectNumber)@cloudbuild.gserviceaccount.com
+            - role: roles/dns.admin
+              members:
+                - serviceAccount:$(ref.{{ env["deployment"] }}.projectNumber)@cloudbuild.gserviceaccount.com

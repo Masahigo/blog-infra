@@ -1,0 +1,31 @@
+info:
+  title: GCP Project creation template
+  author: Masi
+  description: Creates a new project via DM Creation Project. Deployment's name will become the project id for the new project. See README for more details.
+  version: 1.0
+
+imports:
+- path: project.py
+
+required:
+- organization-id
+- billing-account-id
+- owner-account
+- project-name
+
+properties:
+  organization-id:
+    type: string
+    description: Organization id of the DM Creation Project
+
+  billing-account-id:
+    type: string
+    description: Billing account id of the DM Creation Project
+
+  owner-account:
+    type: string
+    description: Owner account for the new project eg 'user:<admin account>'
+
+  project-name:
+    type: string
+    description: Name for the new project

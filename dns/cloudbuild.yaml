@@ -1,0 +1,12 @@
+steps:
+- name: gcr.io/cloud-builders/gcloud
+  args:
+  - beta
+  - dns
+  - managed-zones
+  - create
+  - ms-devops-dude
+  - --dns-name=msdevopsdude.com
+  - --visibility=public
+  - --description=Tech blog about public clouds and devops using MS stack
+  

@@ -22,6 +22,5 @@ gcloud builds submit --config ./dns/cloudbuild.yaml ./dns
 Custom build step for running Hexo commands:
 
 ```bash
-gcloud config set project ms-devops-dude
 gcloud builds submit --config=./hexo-build-step/cloudbuild.yaml ./hexo-build-step/ --project=ms-devops-dude
 ```

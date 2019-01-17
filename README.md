@@ -22,6 +22,7 @@ Initialize App Engine to the newly created project:
 
 ```bash
 # Currently fails with: "ERROR: (gcloud.app.create) PERMISSION_DENIED: The caller does not have permission"
+# Granting the CB Service Account IAM Project Editor role would perhaps work but feels an overkill
 gcloud builds submit --config ./appengine/cloudbuild.yaml ./appengine --project=ms-devops-dude
 ```
 

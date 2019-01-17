@@ -15,8 +15,14 @@ gcloud builds submit --config ./project_creation/cloudbuild.yaml ./project_creat
 Creating managed zone to the newly created project:
 
 ```bash
-gcloud config set project ms-devops-dude
-gcloud builds submit --config ./dns/cloudbuild.yaml ./dns
+gcloud builds submit --config ./dns/cloudbuild.yaml ./dns --project=ms-devops-dude
+```
+
+Initialize App Engine to the newly created project:
+
+```bash
+# Currently fails with: "ERROR: (gcloud.app.create) PERMISSION_DENIED: The caller does not have permission"
+gcloud builds submit --config ./appengine/cloudbuild.yaml ./appengine --project=ms-devops-dude
 ```
 
 Custom build step for running Hexo commands:

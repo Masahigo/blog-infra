@@ -5,29 +5,38 @@ Initial files for the `project_creation` are [from here](https://github.com/Goog
 
 **CLI calls used**
 
-Initial provisioning for the GCP project to host the blog:
+Initial provisioning for the GCP projects to host the blog:
 
 ```bash
 gcloud config set project dm-creation-project-xxxxxx
+# Test environment
+gcloud builds submit --config ./project_creation/cloudbuild.test.yaml ./project_creation
+# Production environment
 gcloud builds submit --config ./project_creation/cloudbuild.yaml ./project_creation
 ```
 
-Creating managed zone to the newly created project:
+Creating managed zone to the newly created project (only prod):
 
 ```bash
 gcloud builds submit --config ./dns/cloudbuild.yaml ./dns --project=ms-devops-dude
 ```
 
-Initialize App Engine to the newly created project:
+Initialize App Engine to the newly created projects:
 
 ```bash
+#gcloud builds submit --config ./appengine/cloudbuild.yaml ./appengine --project=ms-devops-dude
 # Currently fails with: "ERROR: (gcloud.app.create) PERMISSION_DENIED: The caller does not have permission"
-# Granting the CB Service Account IAM Project Editor role would perhaps work but feels an overkill
-gcloud builds submit --config ./appengine/cloudbuild.yaml ./appengine --project=ms-devops-dude
+# UPDATE: Only Project Owner can create App Engine project
+# See documentation: https://cloud.google.com/appengine/docs/standard/python/console/#create
+gcloud app create --region=europe-west3 --project=ms-devops-dude-test
+gcloud app create --region=europe-west3 --project=ms-devops-dude
 ```
 
 Custom build step for running Hexo commands:
 
 ```bash
+# Test environment
+gcloud builds submit --config=./hexo-build-step/cloudbuild.yaml ./hexo-build-step/ --project=ms-devops-dude-test
+# Production environment
 gcloud builds submit --config=./hexo-build-step/cloudbuild.yaml ./hexo-build-step/ --project=ms-devops-dude
 ```

@@ -1,0 +1,9 @@
+steps:
+- name: gcr.io/cloud-builders/gcloud
+  entrypoint: /bin/bash
+  args:
+  - -c
+  - ./create-new-project.sh
+  env:
+  - GCP_DEPLOYMENT_NAME=ms-devops-dude-test
+  - GCP_NEW_PROJECT_NAME=MS DevOps Dude Test
